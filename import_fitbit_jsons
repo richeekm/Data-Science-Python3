@@ -1,0 +1,37 @@
+import os, json
+import pandas as pd
+import numpy as np
+
+path_to_json = 'C:/Users/riche/Documents/DataScience-Python3/MyFitbitData/RicheekMaitra/user-site-export/'
+file_types_dateTime_value_format = ['steps','time_in_heart_rate_zones'
+                                    ,'very_active_minutes','altitude','calories','distance'
+                                   ,'heart_rate','lightly_active_minutes','moderately_active_minutes']
+sav_path ='C:/Users/riche/Documents/DataScience-Python3/MyFitbitData/'
+#List comprehension to get list of names of all files
+f_name = 'heart_rate'
+json_files = [pos_json for pos_json in os.listdir(path_to_json) if pos_json.startswith(f_name)]
+n=len(json_files)
+print('Number of files is {} '.format(n))
+checkpoints = int(round(n/10,0))
+print('Checkpoints will be printed every {} files'.format(checkpoints))
+checkpoint_indices = [n*checkpoints for n in range(11)]
+print('Checkpoints will be at {} '.format(checkpoint_indices))
+# Define pandas Dataframe with column names from json
+jsons_dat = pd.DataFrame(columns=['dateTime','value'])
+# print(jsons_dat.info())
+# we need both the json and an index number so use enumerate()
+l=0
+for index, js in enumerate(json_files):#json_files is the list of json files in the directory
+    
+    with open(os.path.join(path_to_json, js)) as json_file:
+        curr_json = pd.read_json(json_file)
+        
+    jsons_dat=jsons_dat.append(curr_json,ignore_index=True)
+    
+    l_c_j = len(curr_json)
+    l+=len(curr_json)
+    if index%checkpoints==0:
+        print('File number {} with name {} has added {} characters for a total of {} characters'.format(index,js,l_c_j,l))
+
+print(jsons_dat.info())
+jsons_dat.to_csv(os.path.join(sav_path, f_name+'.csv'))
