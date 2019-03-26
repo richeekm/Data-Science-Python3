@@ -1,5 +1,3 @@
 # Data-Science-Python3
 To store and build my python projects
-Most of the stuff here is done as a hobby
-\n
-Do not take very seriously
+Initial projects will be scripts to import data from common household sources like fitbit, google sheets and temperature sensors
